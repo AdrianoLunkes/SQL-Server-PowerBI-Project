@@ -75,6 +75,7 @@ INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
         INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
     INNER JOIN DimGeography dg ON dc.GeographyKey = dg.GeographyKey
+```
 
 ### Additional Analysis: Focusing on 2021 Sales
 
@@ -100,6 +101,7 @@ INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
 INNER JOIN DimSalesTerritory dst ON fis.SalesTerritoryKey = dst.SalesTerritoryKey
 WHERE YEAR(fis.OrderDate) = 2021
+```
 
 ### Data Optimization and Update Example
 
