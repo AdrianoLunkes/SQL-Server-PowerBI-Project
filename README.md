@@ -1,69 +1,62 @@
-SQL Server and Power BI Integration Project
-This project demonstrates an end-to-end business intelligence (BI) solution for analyzing internet sales data from the AdventureWorks 2014 database. The workflow involves data extraction and transformation using SQL Server, followed by data visualization and analysis in Power BI.
+# SQL Server and Power BI Integration Project
 
-Technologies Used
-Database: SQL Server
+This project demonstrates an end-to-end business intelligence (BI) solution for analyzing internet sales data from the **AdventureWorks 2022** database. The workflow involves data extraction and transformation using SQL Server, followed by data visualization and analysis in Power BI.
 
-Data Visualization: Power BI
+---
 
-Sample Data: AdventureWorks 2014
+### Technologies Used
 
-Key Performance Indicators (KPIs)
-The analysis is structured around two main dashboards: a General dashboard for high-level business metrics and a Customers dashboard for a more segmented view of the sales data.
+- **Database:** SQL Server
+- **Data Visualization:** Power BI
+- **Sample Data:** AdventureWorks 2022
 
-General Dashboard
+---
 
-Total Revenue
+### Key Performance Indicators (KPIs)
 
-Quantity Sold
+The analysis is structured around two main dashboards: a **General** dashboard for high-level business metrics and a **Customers** dashboard for a more segmented view of the sales data.
 
-Profit by Country
+**General Dashboard**
+- Total Revenue
+- Quantity Sold
+- Profit by Country
+- Total Product Categories
+- Profit Margin
+- Revenue and Profit by Month
+- Quantity Sold by Month
 
-Total Product Categories
+**Customers Dashboard**
+- Sales by Country
+- Customers by Country
+- Sales by Gender
+- Sales by Category
 
-Profit Margin
+---
 
-Revenue and Profit by Month
+### Project Process
 
-Quantity Sold by Month
+1. **Environment Setup:** The project begins with downloading and configuring the **AdventureWorks 2014** sample database in SQL Server.
+2. **Data Modeling:** Instead of importing multiple tables into Power BI, a SQL `VIEW` (`RESULTADOS_ADW`) was created in SQL Server to centralize the business logic. This approach ensures better performance and a single source of truth for the data.
+3. **Data Transformation:** The `VIEW` performs all necessary joins and creates new columns (like `Sales Profit`) directly in the database.
+4. **Data Visualization:** The `VIEW` is then connected to Power BI to create an interactive dashboard for sales analysis.
 
-Customers Dashboard
+---
 
-Sales by Country
+### Database Schema and SQL Code
 
-Customers by Country
+The following tables and columns were used to build the final `VIEW`.
 
-Sales by Gender
+- `FactInternetSales`: Sales details.
+- `DimCustomer`: Customer information.
+- `DimProductCategory`: Product categories.
+- `DimGeography`: Customer location.
 
-Sales by Category
+**SQL View for Analysis**
 
-Project Process
-Environment Setup: The project begins with downloading and configuring the AdventureWorks 2014 sample database in SQL Server.
+The `RESULTS_ADW` view provides a clean, ready-to-use dataset for Power BI.
 
-Data Modeling: Instead of importing multiple tables into Power BI, a SQL VIEW (RESULTADOS_ADW) was created in SQL Server to centralize the business logic. This approach ensures better performance and a single source of truth for the data.
-
-Data Transformation: The VIEW performs all necessary joins and creates new columns (like Sales Profit) directly in the database.
-
-Data Visualization: The VIEW is then connected to Power BI to create an interactive dashboard for sales analysis.
-
-Database Schema and SQL Code
-The following tables and columns were used to build the final VIEW.
-
-FactInternetSales: Sales details.
-
-DimCustomer: Customer information.
-
-DimProductCategory: Product categories.
-
-DimGeography: Customer location.
-
-SQL View for Analysis
-
-The RESULTADOS_ADW view provides a clean, ready-to-use dataset for Power BI.
-
-SQL
-
-CREATE OR ALTER VIEW RESULTADOS_ADW AS
+```sql
+CREATE OR ALTER VIEW RESULTS_ADW AS
 SELECT
     fis.SalesOrderNumber AS 'Order No.',
     fis.OrderDate AS 'Order Date',
@@ -82,5 +75,3 @@ INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
         INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
     INNER JOIN DimGeography dg ON dc.GeographyKey = dg.GeographyKey
-    
-Power BI Dashboard
