@@ -75,3 +75,41 @@ INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
         INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
     INNER JOIN DimGeography dg ON dc.GeographyKey = dg.GeographyKey
+
+### Additional Analysis: Focusing on 2021 Sales
+
+For a more specific case study, a second view, `ONLINE_SALES`, was created to analyze only the sales from the year **2021**.
+
+**SQL View for 2021 Sales (`ONLINE_SALES`)**
+
+```sql
+CREATE OR ALTER VIEW VENDAS_INTERNET AS
+SELECT
+    fis.SalesOrderNumber AS 'Order No.',
+    fis.OrderDate AS 'Order Date',
+    dpc.EnglishProductCategoryName AS 'Product Category',
+    dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
+    dst.SalesTerritoryCountry AS 'Country',
+    fis.OrderQuantity AS 'Quantity Sold',
+    fis.TotalProductCost AS 'Sales Cost',
+    fis.SalesAmount AS 'Sales Revenue'
+FROM FactInternetSales fis
+INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
+    INNER JOIN DimProductSubcategory dps ON dp.ProductSubcategoryKey = dps.ProductSubcategoryKey
+        INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
+INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
+INNER JOIN DimSalesTerritory dst ON fis.SalesTerritoryKey = dst.SalesTerritoryKey
+WHERE YEAR(fis.OrderDate) = 2021
+
+### Data Optimization and Update Example
+
+This section shows how to maintain data consistency by simulating a data update using a SQL transaction.
+
+```sql
+BEGIN TRANSACTION T1
+    
+    UPDATE FactInternetSales
+    SET OrderQuantity = 20
+    WHERE ProductKey = 361     -- Category Bike
+    
+COMMIT TRANSACTION T1
