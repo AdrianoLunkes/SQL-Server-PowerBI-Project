@@ -35,8 +35,8 @@ The analysis is structured around two main dashboards: a **General** dashboard f
 
 ### Project Process
 
-1. **Environment Setup:** The project begins with downloading and configuring the **AdventureWorks 2014** sample database in SQL Server.
-2. **Data Modeling:** Instead of importing multiple tables into Power BI, a SQL `VIEW` (`RESULTADOS_ADW`) was created in SQL Server to centralize the business logic. This approach ensures better performance and a single source of truth for the data.
+1. **Environment Setup:** The project begins with downloading and configuring the **AdventureWorks 2022** sample database in SQL Server.
+2. **Data Modeling:** Instead of importing multiple tables into Power BI, a SQL `VIEW` (`RESULTS_ADW`) was created in SQL Server to centralize the business logic. This approach ensures better performance and a single source of truth for the data.
 3. **Data Transformation:** The `VIEW` performs all necessary joins and creates new columns (like `Sales Profit`) directly in the database.
 4. **Data Visualization:** The `VIEW` is then connected to Power BI to create an interactive dashboard for sales analysis.
 
