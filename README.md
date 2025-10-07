@@ -84,7 +84,7 @@ For a more specific case study, a second view, `ONLINE_SALES`, was created to an
 **SQL View for 2021 Sales (`ONLINE_SALES`)**
 
 ```sql
-CREATE OR ALTER VIEW VENDAS_INTERNET AS
+CREATE OR ALTER VIEW ONLINE_SALE AS
 SELECT
     fis.SalesOrderNumber AS 'Order No.',
     fis.OrderDate AS 'Order Date',
