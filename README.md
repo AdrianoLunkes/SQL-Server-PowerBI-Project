@@ -87,7 +87,7 @@ For a more specific case study, a second view, `ONLINE_SALES`, was created to an
 CREATE OR ALTER VIEW ONLINE_SALE AS
 SELECT
     fis.SalesOrderNumber AS 'Order No.',
-    DATEADD(YEAR, 9, fis.OrderDate) AS 'Order Date',
+    CAST(DATEADD(YEAR, 9, fis.OrderDate) AS DATE) AS 'Order Date',
     dpc.EnglishProductCategoryName AS 'Product Category',
     dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
     dst.SalesTerritoryCountry AS 'Country',
