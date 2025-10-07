@@ -59,7 +59,7 @@ The `RESULTS_ADW` view provides a clean, ready-to-use dataset for Power BI.
 CREATE OR ALTER VIEW RESULTS_ADW AS
 SELECT
     fis.SalesOrderNumber AS 'Order No.',
-    fis.OrderDate AS 'Order Date',
+    DATEADD(YEAR, 7, fis.OrderDate) AS 'Order Date',
     dpc.EnglishProductCategoryName AS 'Product Category',
     fis.CustomerKey AS 'Customer ID',
     dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
@@ -87,7 +87,7 @@ For a more specific case study, a second view, `ONLINE_SALES`, was created to an
 CREATE OR ALTER VIEW ONLINE_SALE AS
 SELECT
     fis.SalesOrderNumber AS 'Order No.',
-    fis.OrderDate AS 'Order Date',
+    DATEADD(YEAR, 7, fis.OrderDate) AS 'Order Date',
     dpc.EnglishProductCategoryName AS 'Product Category',
     dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
     dst.SalesTerritoryCountry AS 'Country',
