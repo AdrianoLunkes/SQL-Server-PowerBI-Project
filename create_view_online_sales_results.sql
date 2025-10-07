@@ -47,7 +47,7 @@ SELECT * FROM DimGeography
 -- COLUMNS
  
 -- SalesOrderNumber                    (FactInternetSales)
--- OrderDate                           (FactInternetSales)
+-- OrderDate + 7 Years                 (FactInternetSales)
 -- EnglishProductCategoryName          (DimProductCategory) ****
 -- CustomerKey                         (DimCustomer)
 -- FirstName + ' ' + LastName          (DimCustomer)
@@ -64,25 +64,23 @@ SELECT * FROM DimGeography
 
 CREATE OR ALTER VIEW RESULTS_ADW AS
 SELECT
-	fis.SalesOrderNumber AS 'ORDER NUMBER',
-	fis.OrderDate AS 'ORDER DATE',
-	dpc.EnglishProductCategoryName AS 'PRODUCT CATEGORY',
-	fis.CustomerKey AS 'CUSTOMER ID',
-	dc.FirstName + ' ' + dc.LastName AS 'CUSTOMER NAME',
-	REPLACE(REPLACE(dc.Gender, 'M', 'Male'), 'F', 'Female') AS 'GENDER',
-	dg.EnglishCountryRegionName AS 'COUNTRY',
-	fis.OrderQuantity AS 'QUANTITY SOLD',
-	fis.SalesAmount AS 'SALES REVENUE',
-	fis.TotalProductCost AS 'SALES COST',
-	fis.SalesAmount - fis.TotalProductCost AS 'SALES PROFIT'
+    fis.SalesOrderNumber AS 'Order No.',
+    DATEADD(YEAR, 7, fis.OrderDate) AS 'Order Date',
+    dpc.EnglishProductCategoryName AS 'Product Category',
+    fis.CustomerKey AS 'Customer ID',
+    dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
+    REPLACE(REPLACE(dc.Gender, 'M', 'Male'), 'F', 'Female') AS 'Gender',
+    dg.EnglishCountryRegionName AS 'Country',
+    fis.OrderQuantity AS 'Quantity Sold',
+    fis.SalesAmount AS 'Sales Revenue',
+    fis.TotalProductCost AS 'Sales Cost',
+    fis.SalesAmount - fis.TotalProductCost AS 'Sales Profit'
 FROM FactInternetSales fis
 INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
-	INNER JOIN DimProductSubcategory dps ON dp.ProductSubcategoryKey = dps.ProductSubcategoryKey
-		INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
+    INNER JOIN DimProductSubcategory dps ON dp.ProductSubcategoryKey = dps.ProductSubcategoryKey
+        INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
-	INNER JOIN DimGeography dg ON dc.GeographyKey = dg.GeographyKey
-
-
+    INNER JOIN DimGeography dg ON dc.GeographyKey = dg.GeographyKey
 
 
 
@@ -107,7 +105,7 @@ INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
 -- Columns:
 
 -- SalesOrderNumber                (TABLE 1: FactInternetSales)
--- OrderDate                       (TABLE 1: FactInternetSales)
+-- OrderDate + 7 Years             (TABLE 1: FactInternetSales)
 -- EnglishProductCategoryName      (TABLE 4: DimProductCategory)
 -- FirstName + LastName            (TABLE 2: DimCustomer)
 -- Gender                          (TABLE 2: DimCustomer)
@@ -129,9 +127,33 @@ INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
 -- NOTE: THE ANALYSIS YEAR WILL BE ONLY 2021 (ORDER YEAR)
 
 
+CREATE OR ALTER VIEW ONLINE_SALE AS
 SELECT
-	fis.SalesOrderNumber AS 'ORDER NUMBER',
-	fis.OrderDate AS 'ORDER DATE',
-	dpc.EnglishProductCategoryName AS 'PRODUCT CATEGORY',
-	dc.FirstName + ' ' + dc.LastName AS 'CUSTOMER NAME',
-	SalesTerritoryCountry AS 'COU
+    fis.SalesOrderNumber AS 'Order No.',
+    DATEADD(YEAR, 7, fis.OrderDate) AS 'Order Date',
+    dpc.EnglishProductCategoryName AS 'Product Category',
+    dc.FirstName + ' ' + dc.LastName AS 'Customer Name',
+    dst.SalesTerritoryCountry AS 'Country',
+    fis.OrderQuantity AS 'Quantity Sold',
+    fis.TotalProductCost AS 'Sales Cost',
+    fis.SalesAmount AS 'Sales Revenue'
+FROM FactInternetSales fis
+INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
+    INNER JOIN DimProductSubcategory dps ON dp.ProductSubcategoryKey = dps.ProductSubcategoryKey
+        INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
+INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
+INNER JOIN DimSalesTerritory dst ON fis.SalesTerritoryKey = dst.SalesTerritoryKey
+WHERE YEAR(fis.OrderDate) = 2021
+
+
+
+-- Data Optimization and Update Example
+-- This section shows how to maintain data consistency by simulating a data update using a SQL transaction.
+
+BEGIN TRANSACTION T1
+    
+    UPDATE FactInternetSales
+    SET OrderQuantity = 20
+    WHERE ProductKey = 361     -- Category Bike
+    
+COMMIT TRANSACTION T1
