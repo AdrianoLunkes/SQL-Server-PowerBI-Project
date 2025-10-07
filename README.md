@@ -100,7 +100,7 @@ INNER JOIN DimProduct dp ON fis.ProductKey = dp.ProductKey
         INNER JOIN DimProductCategory dpc ON dps.ProductCategoryKey = dpc.ProductCategoryKey
 INNER JOIN DimCustomer dc ON fis.CustomerKey = dc.CustomerKey
 INNER JOIN DimSalesTerritory dst ON fis.SalesTerritoryKey = dst.SalesTerritoryKey
-WHERE YEAR(fis.OrderDate) = 2021
+WHERE YEAR(CAST(DATEADD(YEAR, 9, fis.OrderDate) AS DATE)) = 2021
 ```
 
 ### Data Optimization and Update Example
