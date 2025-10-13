@@ -115,3 +115,41 @@ BEGIN TRANSACTION T1
     WHERE ProductKey = 361     -- Category Bike
     
 COMMIT TRANSACTION T1
+```
+### 📊 Power BI Dashboard Construction  
+
+After creating the SQL views (`RESULTS_ADW` and `ONLINE_SALES`) in SQL Server, the next step was to connect **Power BI Desktop** to the database to visualize and analyze the processed data.  
+
+Using the **“Get Data → SQL Server”** option, the connection was established by entering the server and database names (**AdventureWorks2022**). In the Navigator window, both views were selected and imported into Power BI. Since the SQL views already contained all the necessary joins and transformations, the data model in Power BI was **flat and optimized**, requiring minimal modeling effort.  
+
+For enhanced time-based analysis, a **Date Dimension table** was added to enable filtering by **year, month, and day**.  
+
+---
+
+### 🧩 Dashboard Design  
+
+The Power BI report was designed with **two main dashboards**, following the defined KPIs for sales performance and customer insights.  
+
+#### **1️⃣ General Sales Dashboard**  
+Focuses on the overall business performance with the following visuals:  
+- **Cards:** Total Revenue, Quantity Sold, Number of Customers, Profit Margin  
+- **Line Chart:** Revenue and Profit by Month  
+- **Bar Chart:** Quantity Sold by Month  
+- **Choropleth Map:** Profit by Country  
+
+#### **2️⃣ Customers Dashboard**  
+Provides a deeper analysis of customer profiles and sales segmentation:  
+- **Choropleth Maps:** Sales by Country, Customers by Country  
+- **Bar/Funnel Chart:** Sales by Category  
+- **Donut/Stacked Column Chart:** Sales by Gender  
+
+---
+
+### ⚙️ Interactivity and Functionality  
+
+The dashboard is fully **interactive**, allowing users to explore data dynamically:  
+- Selecting a country on the map automatically updates all other visuals (KPIs, charts, and trends).  
+- Filters and slicers enable users to focus on specific periods, categories, or customer groups.  
+- The navigation between dashboards provides both a **strategic overview** and a **detailed breakdown** of sales insights.  
+
+
